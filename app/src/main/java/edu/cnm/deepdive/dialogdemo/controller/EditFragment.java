@@ -1,8 +1,6 @@
 package edu.cnm.deepdive.dialogdemo.controller;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import edu.cnm.deepdive.dialogdemo.R;
 import edu.cnm.deepdive.dialogdemo.databinding.FragmentEditBinding;
-import java.io.File;
-import java.util.UUID;
 
 public class EditFragment extends DialogFragment {
 
@@ -25,7 +20,6 @@ public class EditFragment extends DialogFragment {
   @Override
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     binding = FragmentEditBinding.inflate(getLayoutInflater(), null, false);
-    binding.takePicture.setOnClickListener((v) -> takePicture());
     return new AlertDialog.Builder(requireContext())
         .setTitle(R.string.edit_dialog_title)
         .setView(binding.getRoot())
@@ -34,7 +28,6 @@ public class EditFragment extends DialogFragment {
         .setIcon(android.R.drawable.ic_dialog_info)
         .create();
   }
-
 
   @Nullable
   @Override
@@ -54,14 +47,4 @@ public class EditFragment extends DialogFragment {
     binding = null;
     super.onDestroyView();
   }
-
-  private void takePicture() {
-    Context context = requireContext();
-    File imageDir = new File(context.getFilesDir(), "images");
-    //noinspection ResultOfMethodCallIgnored
-    imageDir.mkdir();
-    File file = new File(imageDir, UUID.randomUUID().toString());
-    Uri uri = FileProvider.getUriForFile(context, AUTHORITY, file);
-  }
-
 }
