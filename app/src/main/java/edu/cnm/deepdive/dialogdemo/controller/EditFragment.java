@@ -9,30 +9,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import edu.cnm.deepdive.dialogdemo.R;
 import edu.cnm.deepdive.dialogdemo.databinding.FragmentEditBinding;
 
-public class EditFragment extends DialogFragment {
+public class EditFragment extends BottomSheetDialogFragment {
 
   private FragmentEditBinding binding;
 
-  @NonNull
-  @Override
-  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-    binding = FragmentEditBinding.inflate(getLayoutInflater(), null, false);
-    return new AlertDialog.Builder(requireContext())
-        .setTitle(R.string.edit_dialog_title)
-        .setView(binding.getRoot())
-        .setPositiveButton(android.R.string.ok, (dlg, which) -> {/* TODO: Save Content */})
-        .setNegativeButton(android.R.string.cancel, (dlg, which) -> {/* TODO: Probably nothing*/})
-        .setIcon(android.R.drawable.ic_dialog_info)
-        .create();
-  }
+//  @NonNull
+//  @Override
+//  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+//    binding = FragmentEditBinding.inflate(getLayoutInflater(), null, false);
+//    return new AlertDialog.Builder(requireContext())
+//        .setTitle(R.string.edit_dialog_title)
+//        .setView(binding.getRoot())
+//        .setPositiveButton(android.R.string.ok, (dlg, which) -> {/* TODO: Save Content */})
+//        .setNegativeButton(android.R.string.cancel, (dlg, which) -> {/* TODO: Probably nothing*/})
+//        .setIcon(android.R.drawable.ic_dialog_info)
+//        .create();
+//  }
 
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
+    binding = FragmentEditBinding.inflate(getLayoutInflater(), null, false);
     return binding.getRoot(); // Make sure that onViewCreated and onDestroyView get invoked.
   }
 
