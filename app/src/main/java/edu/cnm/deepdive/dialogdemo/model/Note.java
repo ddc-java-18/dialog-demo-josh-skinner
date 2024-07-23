@@ -9,8 +9,21 @@ import androidx.room.PrimaryKey;
 public class Note {
 
   @PrimaryKey(autoGenerate = true)
-      @ColumnInfo(name = "note_id")
+  @ColumnInfo(name = "note_id")
   long id;
+
+  public Note() {
+
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
   private String comment;
   private Uri image;
 

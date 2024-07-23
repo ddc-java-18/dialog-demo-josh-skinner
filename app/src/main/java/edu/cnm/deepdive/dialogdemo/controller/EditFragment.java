@@ -3,7 +3,6 @@ package edu.cnm.deepdive.dialogdemo.controller;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +28,14 @@ public class EditFragment extends BottomSheetDialogFragment {
   private FragmentEditBinding binding;
   private NotesViewModel viewModel;
   private Uri uri;
-  String additionalStuff; // This is just for demonstrating passing data to destinations.
+  private long noteId;
   private ActivityResultLauncher<Uri> takePhotoLauncher;
+  private Note note;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    additionalStuff = EditFragmentArgs.fromBundle(getArguments()).getAdditionalStuff();
+    noteId = EditFragmentArgs.fromBundle(getArguments()).getNoteId();
   }
 
   @Nullable
@@ -48,7 +48,9 @@ public class EditFragment extends BottomSheetDialogFragment {
     binding.save.setOnClickListener((v) -> {
       //noinspection DataFlowIssue
       String comment = binding.notes.getText().toString();
-      viewModel.addNote(new Note(comment, uri));
+      note.setComment(comment);
+      note.setImage(uri);
+      viewModel.addNote(note);
       dismiss();
     });
     return binding.getRoot(); // Make sure that onViewCreated and onDestroyView get invoked.
@@ -66,6 +68,20 @@ public class EditFragment extends BottomSheetDialogFragment {
           }
           this.uri = uri;
         });
+    if (noteId != 0) {
+      viewModel
+          .getNote()
+          .observe(getViewLifecycleOwner(), (note) -> {
+            if (note != null) {
+              this.note = note;
+              binding.notes.setText(note.getComment());
+              binding.thumbnail.setImageURI(note.getImage());
+            }
+          });
+      viewModel.fetchNote(noteId);
+    } else {
+      note = new Note();
+    }
     takePhotoLauncher = registerForActivityResult(
         new ActivityResultContracts.TakePicture(), viewModel::confirmImageCapture);
   }

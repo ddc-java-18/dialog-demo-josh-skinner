@@ -1,6 +1,7 @@
 package edu.cnm.deepdive.dialogdemo.controller;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import androidx.navigation.Navigation;
 import edu.cnm.deepdive.dialogdemo.adapter.NotesAdapter;
 import edu.cnm.deepdive.dialogdemo.databinding.FragmentMainBinding;
 import edu.cnm.deepdive.dialogdemo.viewmodel.NotesViewModel;
-
 
 public class MainFragment extends Fragment {
 
@@ -26,8 +26,7 @@ public class MainFragment extends Fragment {
     binding = FragmentMainBinding.inflate(inflater, container, false);
     binding.showEditFragment.setOnClickListener((v) ->
         Navigation.findNavController(binding.getRoot())
-            .navigate(MainFragmentDirections.navigateToEditFragment()
-                .setAdditionalStuff("example argument")));
+            .navigate(MainFragmentDirections.navigateToEditFragment()));
     // TODO: 7/15/24 Attach listeners to widgets in binding fields.
     return binding.getRoot();
   }
@@ -39,7 +38,11 @@ public class MainFragment extends Fragment {
     viewModel
         .getNotes()
         .observe(getViewLifecycleOwner(), (notes) -> {
-          NotesAdapter adapter = new NotesAdapter(requireContext(), notes);
+          NotesAdapter adapter = new NotesAdapter(requireContext(), notes, (v, note, position) -> {
+            Log.d(getClass().getSimpleName(), "Note clicked: " + note.getComment());
+            Navigation.findNavController(binding.getRoot()).navigate(MainFragmentDirections.navigateToEditFragment()
+                .setNoteId(note.getId()));
+          });
           binding.notes.setAdapter(adapter);
         });
   }
@@ -51,6 +54,5 @@ public class MainFragment extends Fragment {
   }
 
 }
-
   
 
