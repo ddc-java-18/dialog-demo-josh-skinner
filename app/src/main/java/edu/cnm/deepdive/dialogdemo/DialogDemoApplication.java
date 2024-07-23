@@ -2,6 +2,7 @@ package edu.cnm.deepdive.dialogdemo;
 
 import android.app.Application;
 import androidx.appcompat.app.AppCompatDelegate;
+import edu.cnm.deepdive.dialogdemo.service.NotesDatabase;
 
 public class DialogDemoApplication extends Application {
 
@@ -10,5 +11,6 @@ public class DialogDemoApplication extends Application {
     super.onCreate();
     // below is setting to have follow day/night mode based on what user has set on their device.
     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+    NotesDatabase.setContext(this);
   }
 }
